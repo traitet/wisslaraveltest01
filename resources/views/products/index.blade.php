@@ -1,6 +1,19 @@
 @extends('layouts.app')
+<div>
+    <a style="margin: 19px;" href="{{ route('contacts.create')}}" class="btn btn-primary">New contact</a>
+    </div>
+<div class="col-sm-12">
 
 @section('content')
+
+
+    @if(session()->get('success'))
+      <div class="alert alert-success">
+        {{ session()->get('success') }}
+      </div>
+    @endif
+  </div>
+
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,6 @@ Route::get('/', function () {
 
 // link with controller
 Route::resource('products', ProductController::class);
+// link with controller (below are same command)
+// Route::resource('contacts', 'App\Http\Controllers\ContactController');
+Route::resource('contacts', ContactController::class);
