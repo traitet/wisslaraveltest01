@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,8 @@ Route::resource('products', ProductController::class);
 // link with controller (below are same command)
 // Route::resource('contacts', 'App\Http\Controllers\ContactController');
 Route::resource('contacts', ContactController::class);
+
+
+Route::post('main',[MainController::class,'getData']);
+
+Route::view('report','main');
