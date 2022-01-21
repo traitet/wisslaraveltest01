@@ -37,14 +37,17 @@ class MainController extends Controller
     {
 
         if (!empty($req->input())) {
-            
+            // $response = Http::get('http://10.100.1.94/wiss-api/ErrorLog/1S%20SRCTBS1A4046');
+            // $response = Http::get('http://10.100.1.94/wiss-api/EventLog/1S%20SRCTBS1A4046');
+            // $response = Http::get('http://10.100.1.94/wiss-api/NgLog/1S%20SRCTBS1A4046');
+            // $response = Http::get('http://10.100.1.94/wiss-api/OkLog/1S%20SRCTBS1A4046');
             $response = Http::get('http://10.100.1.94/wiss-api/EventLog/1S%20SRCTBS1A4046');
             if ($response->status() == 200) {
 
                 $result = json_decode($response->body(), true);
 
                 $keyArray = array_keys($result[0]);
-            } 
+            }
         }
 
         return view('main', compact('result','keyArray'));
