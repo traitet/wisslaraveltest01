@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>WISS</title>
-
+    @include('theme.header')
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/colreorder/1.5.5/css/colReorder.dataTables.min.css" rel="stylesheet">
@@ -21,7 +21,9 @@
     <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script> -->
 
     <!-- Styles -->
     <style>
@@ -30,7 +32,7 @@
         body {
             margin: 0;
             font-family: 'Lato', sans-serif;
-            text-align: center;
+            /* text-align: center; */
             color: #999;
         }
 
@@ -63,15 +65,17 @@
     </style>
     <script>
         $(document).ready(function() {
-            console.log("test")
+            console.log('test')
             $('#table_id').DataTable({
-
-                dom: 'Bfrtip',
+                dom: '<"top"fB>t<"bottom"lip>r',
+                // dom: 'Bfrtip',
                 buttons: [
                     'copy', 'excel', 'csv'
-                ]
+                ],
+
+                responsive: true,
             });
-            // var table = $('#myTable').DataTable();
+
 
 
         });
@@ -81,118 +85,165 @@
             console.log(dateStart);
             $('#dateEnd').val(dateStart);
         }
+
+        const clearForm = () => {
+            $('#myForm')[0].reset();
+        }
+
+        function toggle() {
+            $('#sidebarToggle').toggle(
+                console.log('toggle')
+            );
+
+        }
     </script>
 
 </head>
 
-<body>
-    <form method="POST" action="main">
-        @csrf
-        <div class="container">
-            <h1>Report</h1>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkOk" name="type">
-                <label class="form-check-label" for="flexCheckDefault">
-                    OK
-                </label>
-                <input class="form-check-input" type="checkbox" value="" id="checkNG" name="type">
-                <label class="form-check-label" for="flexCheckDefault">
-                    NG
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkEvent" name="type">
-                <label class="form-check-label" for="flexCheckDefault">
-                    Event
-                </label>
-                <input class="form-check-input" type="checkbox" value="" id="checkError" name="type">
-                <label class="form-check-label" for="flexCheckDefault">
-                    Error
-                </label>
-            </div>
-            <div class="input-group date" data-provide="datepicker">
-                <div class="form-group form-inline">
-                    <label for="dateStart">Date Start:</label>
-                    <input type="date" class="" id="dateStart" name="dateStart" onchange="dateEndHandler();">
+<body id="page-top">
 
-                    <label for="dateStart">Date End:</label>
-                    <input type="date" class="" id="dateEnd" name="dateEnd">
-                </div>
-                <div class="form-group form-inline">
-                    <label for="dateStart">PDS no.</label>
-                    <input type="text" class="" id="pdsNo" name="pdsNo">
+    <div id="wrapper">
 
-                </div>
+        @include('theme.sidebar')
 
-            </div>
-            <!-- <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkDate" name="typeDatePdf">
-                <label class="form-check-label" for="flexCheckDefault">
-                    Date
-                </label>
-                <input class="form-check-input" type="checkbox" value="" id="checkPds" name="typeDatePds">
-                <label class="form-check-label" for="flexCheckDefault">
-                    pds
-                </label>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
 
-            </div> -->
-            <div class="form-group">
-                <button type="submit">Search</button>
-                <button type="button">Clear</button>
-            </div>
+                @include('theme.navbar')
 
-            <!-- <table id="table_id" class="display">
-                <thead>
-                    <tr>
-                        <th>Column 1</th>
-                        <th>Column 2</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Row 1 Data 1</td>
-                        <td>Row 1 Data 2</td>
-                    </tr>
-                    <tr>
-                        <td>Row 2 Data 1</td>
-                        <td>Row 2 Data 2</td>
-                    </tr>
-                </tbody>
-            </table> -->
-            <table id="table_id" class="display">
-                <thead>
-                    <tr>
-                        <?php if (isset($keyArray)) {
-                            foreach ($keyArray as $key => $value) { ?>
-
-                                <th scope="col">{{$value}}</th>
-
-                        <?php  }
-                        } ?>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (isset($result)) {
-                        foreach ($result as $keyResult => $row) { ?>
-                            <tr>
-                                <?php foreach ($row as $keyRow => $data) { ?>
+                <form method="POST" action="main" id="myForm">
+                    @csrf
+                    <div class="container-fluid">
 
 
-                                    <td>{{$row[$keyRow]}}</td>
-
-                                <?php } ?>
-                            </tr>
-                    <?php }
-                    } ?>
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Report</h1>
+                            <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+                        </div>
 
 
+                        <div class="row">
 
 
-                </tbody>
-            </table>
-        </div>
+                            <div class="col-xl-12 col-lg-12">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Criteria</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group" style="width:50%">
+                                            <h5 class="small font-weight-bold">Report Type <span class="float-right"></span></h5>
+                                            <div class="form-check">
+                                                <label class="radio-inline">
+                                                    <input type="checkbox" name="typeOKNG[]" value="OK">OK
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="checkbox" name="typeOKNG[]" value="NG">NG
+                                                </label>
+                                                <!-- <label class="radio-inline" for="flexCheckDefault">
+                                                <input class="form-check-input move-left" type="checkbox" value="OK" name="typeOKNG[]">
+                                                OK
+                                            </label> -->
+                                            </div>
 
-    </form>
+                                            <div class="form-check">
+                                                <label class="radio-inline">
+                                                    <input type="checkbox" name="typeErrorEvent[]" value="Event">Event
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="checkbox" name="typeErrorEvent[]" value="Error">Error
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-group form-inline">
+
+                                                <label for="dateStart">Date Start: </label>
+                                                <input class="form-control" type="date" class="" id="dateStart" name="dateStart" onchange="dateEndHandler();">
+                                                &nbsp;&nbsp;
+                                                <label for="dateStart">Date End: </label>
+                                                <input class="form-control" type="date" class="" id="dateEnd" name="dateEnd">
+                                                &nbsp;&nbsp;
+                                                <label for="dateStart">PDS no. </label>
+                                                <input class="form-control" type="text" class="" id="pdsNo" name="pdsNo">
+                                            </div>
+                                            <div class="form-group form-inline">
+
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">Search</button>
+                                            <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="container-fluid">
+
+                        <!-- Page Heading -->
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+                        </div>
+
+                        <!-- Content Row -->
+                        <div class="row">
+
+                            <!-- Project Card Example -->
+                            <div class="col-xl-12 col-lg-12">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Table Information</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+
+                                            <table class="table table-bordered" id="table_id" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <?php if (isset($keyArray)) {
+                                                            foreach ($keyArray as $key => $value) { ?>
+
+                                                                <th scope="col">{{$value}}</th>
+
+                                                        <?php  }
+                                                        } ?>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php if (isset($result)) {
+                                                        foreach ($result as $keyResult => $row) { ?>
+                                                            <tr>
+                                                                <?php foreach ($row as $keyRow => $data) { ?>
+
+
+                                                                    <td>{{$row[$keyRow]}}</td>
+
+                                                                <?php } ?>
+                                                            </tr>
+                                                    <?php }
+                                                    } ?>
+
+
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+                @include('theme.footer')
 </body>
+
+
 
 </html>
